@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Message\MailNotification;
 use App\Message\SmsNotification;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Console\Command\Command;
@@ -32,6 +33,10 @@ class TestCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $message = new SmsNotification('Message content', new ArrayCollection(['+31600000000' => 'John doe', '+31600000001' => 'Jane doe']));
+
+        $this->messageBus->dispatch($message);
+
+        $message = new MailNotification('Message content');
 
         $this->messageBus->dispatch($message);
 
